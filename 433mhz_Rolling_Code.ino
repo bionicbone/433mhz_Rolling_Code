@@ -68,7 +68,7 @@ void setup() {
 #endif  //RANDOM_NUMBERS 
 
   // Tx Mode
-#ifdef MODE 
+#if defined MODE && !defined RANDOM_NUMBERS
   pinMode(2, INPUT_PULLUP);
   for (int i = 0; i < 4; i++) {
     pinMode(pins[i], OUTPUT);
@@ -77,7 +77,7 @@ void setup() {
 
 
   // Rx Mode
-#ifndef MODE 
+#if !defined MODE && !defined RANDOM_NUMBERS
   pinMode(2, INPUT);
   for (int i = 0; i < 4; i++) {
     pinMode(pins[i], INPUT);
@@ -93,7 +93,7 @@ void setup() {
 
 void loop() {
   // Tx Mode
-#ifdef MODE 
+#if defined MODE && !defined RANDOM_NUMBERS
   // Set all pins HIGH, no transmision
   for (byte i = 0; i < sizeofPins; i++) {
     digitalWrite(pins[i], HIGH);
@@ -150,7 +150,7 @@ void loop() {
 #endif // Tx Mode
 
   // Rx Mode
-#ifndef MODE
+#if !defined MODE && !defined RANDOM_NUMBERS
   // Read preamble
   FAIL :
   uint8_t preambleCounter = 0;
