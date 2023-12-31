@@ -20,6 +20,10 @@
 // Uncomment MODE line to flash Tx, comment to flash Rx
 //#define MODE
 
+// Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
+// NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
+//#define RANDOM_NUMBERS
+
 // user can change the rolling code values (1-15 inc.), but must ensure Tx and Rx have the same order, length must be divisable by sizeofSendingRollingCode
 int8_t rollingCode[1498] = { 5, 9, 12, 15, 11, 4, 7, 3, 6, 2, 6, 12, 15, 7, 11, 9, 5, 14, 7, 12, 9, 12, 5, 10, 5, 6, 8, 12, 3, 2, 12, 1, 5, 4, 5, 14, 5, 7, 14, 8, 11, 2, 7, 5, 9, 4, 8, 6, 4, 13, 15, 4, 13, 4, 10, 6, 5, 8, 1, 14, 5, 9, 5, 9, 10, 7, 2, 2, 13, 6, 14, 8, 8, 8, 8, 8, 8, 11, 12, 1, 3, 13, 11, 12, 2, 2, 13, 8, 8, 12, 1, 13, 13, 14, 3, 5, 3, 4, 9, 15, 11, 1, 8, 7, 15, 2, 15, 11, 15, 5, 2, 10, 5, 3, 10, 7, 14, 4, 14, 1, 3, 2, 13, 1, 10, 8, 10, 6, 5, 11, 3, 12, 14, 3, 1, 3, 7, 2, 1, 6, 9, 7, 15, 3, 13, 11, 10, 5, 11, 14, 14, 9, 3, 7, 5, 15, 6, 8, 15, 4, 13, 3, 4, 15, 10, 1, 3, 8, 14, 10, 5, 14, 2, 8, 13, 5, 9, 15, 13, 7, 7, 2, 14, 2, 6, 6, 11, 11, 7, 13, 14, 8, 3, 14, 13, 1, 6, 12, 3, 2, 4, 12, 2, 2, 7, 9, 8, 7, 7, 8, 6, 3, 8, 8, 7, 4, 12, 2, 12, 12, 4, 3, 14, 7, 7, 9, 4, 10, 14, 7, 8, 7, 11, 8, 7, 3, 2, 7, 2, 6, 5, 8, 8, 3, 9, 10, 3, 7, 3, 11, 1, 9, 3, 8, 2, 8, 15, 12, 5, 6, 5, 5, 15, 6, 7, 9, 8, 10, 6, 5, 10, 15, 12, 14, 15, 4, 14, 9, 4, 13, 8, 9, 8, 8, 12, 12, 4, 11, 11, 5, 9, 11, 2, 13, 13, 14, 14, 5, 5, 1, 3, 2, 12, 1, 15, 14, 15, 14, 9, 4, 9, 15, 10, 6, 2, 6, 13, 3, 2, 14, 4, 11, 12, 7, 7, 12, 11, 13, 2, 7, 5, 12, 6, 11, 1, 10, 12, 14, 6, 3, 11, 1, 15, 2, 6, 13, 2, 2, 9, 15, 12, 13, 14, 4, 7, 5, 15, 8, 10, 12, 14, 5, 4, 11, 12, 2, 1, 11, 4, 13, 15, 3, 2, 2, 14, 1, 6, 9, 6, 4, 6, 5, 1, 14, 10, 10, 10, 15, 14, 8, 4, 10, 3, 3, 6, 11, 9, 15, 11, 12, 11, 12, 8, 5, 11, 8, 10, 8, 7, 3, 13, 4, 12, 3, 15, 10, 15, 11, 15, 15, 5, 5, 6, 7, 12, 3, 2, 13, 3, 7, 15, 9, 1, 13, 11, 6, 15, 5, 14, 13, 5, 13, 10, 3, 15, 11, 8, 14, 1, 6, 12, 2, 11, 12, 15, 14, 8, 9, 8, 13, 2, 10, 2, 4, 6, 6, 12, 13, 7, 8, 10, 1, 3, 14, 7, 4, 14, 13, 5, 2, 4, 10, 7, 1, 12, 3, 8, 1, 6, 10, 1, 15, 8, 15, 1, 9, 2, 12, 13, 2, 1, 13, 15, 15, 8, 15, 9, 8, 14, 14, 12, 8, 13, 3, 4, 14, 13, 1, 8, 10, 2, 9, 6, 1, 15, 2, 12, 4, 8, 5, 3, 2, 5, 4, 15, 12, 11, 7, 2, 4, 10, 6, 1, 8, 7, 12, 8, 11, 3, 6, 8, 15, 9, 9, 2, 2, 9, 13, 2, 2, 7, 5, 11, 6, 6, 13, 15, 14, 5, 6, 2, 14, 14, 2, 3, 14, 9, 3, 15, 9, 6, 8, 15, 9, 6, 8, 4, 6, 10, 1, 12, 14, 9, 13, 15, 1, 12, 9, 9, 14, 2, 13, 13, 4, 10, 2, 3, 2, 1, 5, 15, 2, 8, 12, 7, 4, 15, 14, 8, 5, 1, 14, 13, 2, 6, 9, 15, 12, 8, 3, 7, 13, 1, 4, 13, 5, 3, 14, 12, 15, 10, 12, 15, 12, 13, 10, 8, 2, 12, 10, 5, 13, 14, 14, 10, 10, 4, 8, 11, 10, 15, 15, 14, 1, 15, 11, 14, 11, 10, 4, 14, 2, 9, 14, 9, 7, 8, 12, 10, 13, 14, 15, 15, 4, 12, 9, 13, 14, 13, 5, 11, 4, 9, 10, 7, 5, 10, 4, 10, 12, 13, 14, 12, 7, 11, 7, 5, 11, 1, 4, 4, 11, 15, 8, 2, 12, 4, 10, 3, 11, 12, 7, 7, 14, 7, 7, 9, 9, 4, 13, 15, 14, 13, 2, 9, 9, 14, 5, 13, 13, 11, 3, 15, 3, 15, 12, 10, 13, 15, 5, 12, 3, 7, 12, 14, 8, 5, 1, 1, 11, 8, 11, 14, 10, 8, 11, 7, 13, 1, 14, 10, 6, 11, 15, 2, 10, 11, 9, 1, 7, 1, 4, 12, 4, 10, 14, 3, 4, 12, 6, 8, 4, 7, 14, 4, 4, 5, 7, 4, 2, 7, 4, 6, 4, 5, 4, 10, 12, 14, 3, 6, 11, 7, 13, 10, 8, 1, 1, 1, 14, 4, 11, 14, 6, 8, 14, 7, 8, 15, 7, 9, 7, 11, 9, 11, 10, 3, 2, 15, 13, 1, 4, 15, 15, 13, 12, 13, 14, 8, 2, 7, 6, 3, 4, 12, 13, 6, 2, 3, 9, 14, 7, 15, 5, 9, 13, 11, 9, 6, 10, 13, 9, 7, 3, 5, 12, 4, 11, 5, 13, 6, 12, 13, 4, 2, 12, 6, 10, 2, 10, 10, 15, 11, 3, 13, 15, 3, 5, 15, 3, 4, 1, 2, 10, 8, 10, 12, 15, 9, 1, 11, 5, 6, 1, 11, 13, 3, 3, 7, 2, 10, 6, 13, 3, 6, 14, 1, 3, 4, 14, 8, 9, 14, 6, 12, 7, 14, 4, 1, 1, 9, 15, 11, 13, 15, 14, 3, 12, 6, 1, 3, 10, 6, 13, 7, 15, 10, 6, 7, 3, 11, 9, 1, 2, 15, 8, 12, 12, 3, 10, 2, 1, 4, 8, 10, 2, 8, 6, 15, 10, 11, 14, 14, 13, 1, 10, 4, 1, 5, 13, 1, 15, 4, 3, 3, 11, 14, 15, 7, 11, 1, 15, 5, 3, 7, 4, 1, 4, 10, 1, 2, 15, 6, 10, 15, 10, 8, 1, 2, 15, 9, 10, 9, 9, 9, 12, 4, 12, 3, 6, 12, 2, 1, 12, 15, 1, 3, 10, 8, 10, 9, 14, 14, 4, 11, 11, 14, 3, 11, 5, 13, 10, 1, 8, 4, 1, 13, 1, 7, 2, 8, 10, 11, 7, 10, 11, 14, 2, 14, 13, 13, 14, 14, 11, 15, 11, 9, 10, 14, 15, 14, 14, 2, 14, 4, 8, 2, 7, 6, 2, 5, 4, 7, 14, 5, 12, 11, 12, 2, 1, 10, 5, 12, 1, 2, 9, 7, 10, 3, 15, 10, 8, 9, 10, 8, 8, 9, 5, 14, 2, 13, 9, 1, 3, 5, 3, 12, 1, 8, 5, 8, 6, 1, 12, 15, 7, 14, 3, 7, 1, 11, 9, 8, 2, 9, 10, 7, 1, 2, 4, 9, 12, 2, 6, 2, 6, 2, 12, 4, 13, 2, 5, 3, 15, 10, 5, 12, 1, 8, 2, 13, 10, 2, 3, 1, 10, 12, 4, 2, 7, 9, 6, 7, 7, 11, 13, 10, 9, 13, 5, 6, 9, 15, 5, 2, 15, 4, 6, 9, 2, 13, 15, 11, 2, 5, 14, 1, 9, 10, 7, 4, 15, 15, 9, 13, 9, 10, 15, 9, 1, 3, 4, 1, 6, 12, 3, 9, 13, 3, 15, 2, 4, 14, 8, 6, 11, 10, 4, 7, 4, 4, 14, 11, 15, 7, 6, 10, 6, 8, 2, 2, 9, 15, 4, 2, 1, 1, 7, 12, 12, 2, 10, 9, 14, 13, 15, 7, 1, 5, 12, 7, 14, 8, 12, 6, 8, 14, 6, 9, 2, 9, 12, 14, 15, 11, 13, 2, 5, 6, 9, 14, 8, 4, 15, 15, 10, 15, 14, 8, 1, 14, 5, 11, 11, 2, 3, 7, 5, 9, 11, 15, 13, 8, 9, 7, 1, 13, 8, 14, 14, 4, 1, 13, 15, 9, 12, 1, 13, 4, 8, 11, 4, 10, 1, 4, 12, 12, 11, 9, 1, 12, 8, 1, 5, 2, 12, 14, 13, 15, 9, 10, 4, 14, 7, 7, 8, 1, 5, 8, 15, 10, 7, 7, 15, 13, 13, 9, 13, 13, 15, 13, 11, 10, 2, 15, 6, 15, 15, 5, 1, 1, 5, 7, 8, 3, 13, 12, 12, 10, 12, 4, 8, 1, 9, 7, 6, 9, 8, 8, 5, 1, 1, 8, 14, 11, 1, 12, 15, 12, 1, 5, 4, 2, 6, 6, 7, 7, 6, 4, 13, 1, 9, 4, 13, 5, 5, 14, 7, 8, 3, 4, 5, 3, 12, 4, 10, 7, 15, 6, 15, 8, 2, 11, 5, 2, 11, 2, 2, 7, 1, 10, 8, 4, 4, 15, 13, 3, 15, 7, 7, 11, 5, 6, 7, 14, 14, 5, 4, 14, 5, 10, 9, 9, 4, 7, 5, 2, 12, 4, 12, 14, 7, 11, 7, 11, 1, 1, 2, 1, 10, 5, 4, 9, 11, 8, 1, 2, 14 };
 int8_t sizeofSendingRollingCode = 7;  // user can increase this for extra security but will take longer to transmit, rollingCode[xxx] must be divisable by sizeofSendingRollingCode
@@ -35,7 +39,8 @@ int8_t readCode = 0;
 int errorCounter = 0;
 int rollingCodeNumber = 0;
 // TODO - this will need to increase if sizeofSendingRollingCode is changed from 3
-int8_t readRollingCode[7] = {0};
+int8_t readRollingCode[7] = { 0 };
+int8_t checkRepeatCode[7] = { 0 };
 
 
 // The setup() function runs once each time the micro-controller starts
@@ -44,7 +49,11 @@ void setup() {
   sizeofPins = sizeof pins;
   sizeofPreamble = sizeof preamble;
   sizeofRollingCode = sizeof rollingCode;
-  //RandomCodeGenorator();
+
+#ifdef RANDOM_NUMBERS
+  RandomCodeGenorator();
+  while (true);
+#endif  //RANDOM_NUMBERS 
 
   // Tx Mode
 #ifdef MODE 
@@ -141,13 +150,6 @@ void loop() {
     }
   }
 
-  //// TODO - check this code, ReadDataPins() should handle the timing...
-  //pulseTimer = millis() + 500;
-  //while (!digitalRead(2) && millis() < pulseTimer);
-  //if (millis() >= pulseTimer) {
-  //  Serial.println("Failed to capture Rolling Number");
-  //  goto FAIL;
-  //}
 
   // read the rolling code
   Serial.print("sizeofSendingRollingCode: "); Serial.println(sizeofSendingRollingCode);
@@ -161,7 +163,25 @@ void loop() {
     }
   }
   Serial.println();
+   
 
+  // check rolling code is not a repeat of the last one
+  uint8_t checkRepeatCodeCounter = 0;
+  for (uint8_t i = 0; i < sizeofSendingRollingCode; i++) {
+    if (checkRepeatCode[i] == readRollingCode[i]) checkRepeatCodeCounter++;
+  }
+  if (checkRepeatCodeCounter == sizeofSendingRollingCode) {
+    Serial.println("Rolling Code Repeat Detected");
+    goto FAIL;
+  }
+  else {   // capture this rolling code for next time
+    for (uint8_t i = 0; i < sizeofSendingRollingCode; i++) {
+      checkRepeatCode[i] = readRollingCode[i];
+    }
+  }
+
+
+  
   // check the rolling code
   int tryRollingNumber = 0;
   //byte readRollingNumberCounter = 0;
@@ -225,6 +245,7 @@ int8_t ReadDataPins() {
   }
 }
 
+#ifdef RANDOM_NUMBERS
 void RandomCodeGenorator() {
   // Choose 2 random resitors and connect 1 from 5v to A0 and the other from GND to A0 to make a voltage divider
   Serial.println();
@@ -237,3 +258,4 @@ void RandomCodeGenorator() {
     Serial.print(randNumber); Serial.print(", ");
   }
 }
+#endif // RANDOM_NUMBERS
