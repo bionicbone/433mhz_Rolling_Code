@@ -297,11 +297,10 @@ void loop() {
 
 
   // activate Rx pins for 210ms based on buttons pressed on Tx
-
   digitalWrite(buttonAndOutputPins[buttons - 1], HIGH);
   debugChangesLoop("Buttons = %d pin %d value HIGH", buttons, buttonAndOutputPins[buttons -1]);
 
-  delay(1000);
+  delay(210);
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
     digitalWrite(buttonAndOutputPins[i], LOW);
   }
