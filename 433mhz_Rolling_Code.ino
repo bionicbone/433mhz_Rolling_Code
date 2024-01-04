@@ -26,7 +26,7 @@
 */
 
 // Uncomment MODE line to flash Tx, comment to flash Rx
-#define MODE
+//#define MODE
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
@@ -274,14 +274,14 @@ void loop() {
       if (tryRollingNumber >= sizeofRollingCode) tryRollingNumber = 0;
 
       for (uint16_t x = tryRollingNumber; x < tryRollingNumber + sizeofSendingRollingCode; x++) {
-        if (readRxData[x - tryRollingNumber] == rollingCode[x]) {
+        if (data[x - tryRollingNumber] == rollingCode[x]) {
           debug("Try rolling Code Position %d \n", x);
-          debug(" *** Rolling Code Correct *** %d = %d \n", readRxData[x - tryRollingNumber], rollingCode[x]);
+          debug(" *** Rolling Code Correct *** %d = %d \n", data[x - tryRollingNumber], rollingCode[x]);
           passed++;
         }
         else {
           debug("Try rolling Code Position %d \n", x);
-          debug(" Rolling Code INCORRECT %d <> %d \n", readRxData[x - tryRollingNumber], rollingCode[x]);
+          debug(" Rolling Code INCORRECT %d <> %d \n", data[x - tryRollingNumber], rollingCode[x]);
           passed = 0;
         }
       }
@@ -331,7 +331,7 @@ bool Rx_AcceptData() {
         for (int8_t i = sizeofPins - 1; i >= 0; i--) {
           bitWrite(readCode, i, digitalRead(pins[i]));
         }
-        readRxData[countOfDataReceived] = readCode;
+        data[countOfDataReceived] = readCode;
         countOfDataReceived++;
       }
     }
@@ -347,7 +347,7 @@ bool CheckRepeatedRollingCode() {
   //        Since qaichip is bound to Rx, then anything reaching this stage must be a record and playback message
   uint8_t checkRepeatCodeCounter = 0;
   for (uint8_t i = 0; i < sizeofSendingRollingCode; i++) {
-    if (checkRepeatCode[i] == readRxData[i]) checkRepeatCodeCounter++;
+    if (checkRepeatCode[i] == data[i]) checkRepeatCodeCounter++;
   }
   if (checkRepeatCodeCounter == sizeofSendingRollingCode) {
     debug("Rolling Code Repeat Detected \n");
@@ -355,7 +355,7 @@ bool CheckRepeatedRollingCode() {
   }
   else {   // capture this rolling code for next time
     for (uint8_t i = 0; i < sizeofSendingRollingCode; i++) {
-      checkRepeatCode[i] = readRxData[i];
+      checkRepeatCode[i] = data[i];
     }
   }
   return false;
@@ -363,7 +363,7 @@ bool CheckRepeatedRollingCode() {
 
 
 void ActivateRxButtonPins() {
-  uint8_t functionButtons = readRxData[sizeofSendingRollingCode];
+  uint8_t functionButtons = data[sizeofSendingRollingCode];
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
     debug("button bit % d = % d \n", i, bitRead(functionButtons, i));
   }
