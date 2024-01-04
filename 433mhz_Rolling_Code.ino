@@ -26,7 +26,7 @@
 */
 
 // Uncomment MODE line to flash Tx, comment to flash Rx
-//#define MODE
+#define MODE
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
@@ -71,7 +71,7 @@ uint8_t checkRepeatCode[10] = { 0 };
 // Depreciated - uint8_t buttons = 0;
 
 // New_Accept_Data_Then_Validate approach for Rx, max 10 rolling codes + 1 buttons data
-uint8_t readRxData[11] = { 0 };
+uint8_t data[11] = { 0 };
 
 
 // The setup() function runs once each time the micro-controller starts
@@ -130,73 +130,82 @@ void loop() {
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
 
     if (digitalRead(buttonAndOutputPins[i]) == LOW) {
-
+      uint8_t functionButtons = 0;
       // read users buttons
       // TODO must capture all user buttons, allow for slight delay in pressing two user buttons together for example
       // always capture the intial button press
-      buttons = 0 | (i + 1);
+      functionButtons = 0 | (i + 1);
       // check all buttons , OR comparision will not interfer with initial button pressed set above
       for (uint8_t x = 0; x < sizeofbuttonAndOutputPins; x++) {
-        if (digitalRead(x) == LOW) buttons | (x + 1);
+        if (digitalRead(x) == LOW) functionButtons | (x + 1);
       }
-      debug("Button Value = %d", buttons);
+      debug("Button Value = %d", functionButtons);
 
-      // send preamble
-      for (byte number = 0; number < sizeofPreamble; number++) {
-        pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
+      //// Depreciated - send preamble
+      //for (byte number = 0; number < sizeofPreamble; number++) {
+      //  pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
 
-        for (byte i = 0; i < sizeofPins; i++) {
-          if (bitRead(preamble[number], i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
-        }
-        delay(3);   // give time for the qiachip to detect change
+      //  for (byte i = 0; i < sizeofPins; i++) {
+      //    if (bitRead(preamble[number], i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
+      //  }
+      //  delay(3);   // give time for the qiachip to detect change
 
-        // Reset the Tx pins
-        for (byte i = 0; i < sizeofPins; i++) {
-          digitalWrite(pins[i], HIGH);
-        }
+      //  // Reset the Tx pins
+      //  for (byte i = 0; i < sizeofPins; i++) {
+      //    digitalWrite(pins[i], HIGH);
+      //  }
 
-        // control the timing
-        while (millis() <= pulseTimer);
-      }
+      //  // control the timing
+      //  while (millis() <= pulseTimer);
+      //}
 
-      // send the rolling code
+      // Prepare the Transmission Array
+      // place debugging outside of transmission loop so baud is not effected
       debug("Transit Rolling Code: \n");
-      for (byte number = 0; number < sizeofSendingRollingCode; number++) {
-        pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
+      for (uint8_t i = 0; i < sizeofSendingRollingCode; i++) {
+        data[i] = rollingCode[rollingCodeNumber + i];
+        debug(" %d, ", data[i]);
+      }
+      // add the button data
+      data[rollingCodeNumber + sizeofSendingRollingCode + 1] = functionButtons;
+      debug("Buttons: %d \n", functionButtons);
+      
+      // send the data (rolling code & button value)
+      for (uint8_t number = 0; number < sizeofSendingRollingCode + 1; number++) {
+        uint64_t pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
 
-        for (byte i = 0; i < sizeofPins; i++) {
-          if (bitRead(rollingCode[rollingCodeNumber + number], i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
+        for (uint8_t i = 0; i < sizeofPins; i++) {
+          if (bitRead(data[number], i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
         }
-        debug(" %d, ", rollingCode[rollingCodeNumber + number]);
         delay(3);   // give time for quichip to detect change
 
         // Reset the Tx pins
-        for (byte i = 0; i < sizeofPins; i++) {
+        for (uint8_t i = 0; i < sizeofPins; i++) {
           digitalWrite(pins[i], HIGH);
         }
 
         // control the timing
         while (millis() <= pulseTimer);
       }
-      debug("\n");
+      
 
-      // send the button presses
-      pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
+      //// Depreciated - send the button presses
+      //pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
 
-      for (byte i = 0; i < sizeofbuttonAndOutputPins; i++) {
-        if (bitRead(buttons, i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
-        debug("button bit % d = % d \n", i, bitRead(buttons, i));
-      }
-      debug("Transmit Button Value %d \n", buttons);
-      delay(3);   // give time for quichip to detect change
+      //for (byte i = 0; i < sizeofbuttonAndOutputPins; i++) {
+      //  if (bitRead(buttons, i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
+      //  debug("button bit % d = % d \n", i, bitRead(buttons, i));
+      //}
+      //debug("Transmit Button Value %d \n", buttons);
+      //delay(3);   // give time for quichip to detect change
 
-      // Reset the Tx pins
-      for (byte i = 0; i < sizeofPins; i++) {
-        digitalWrite(pins[i], HIGH);
-      }
+      //// Reset the Tx pins
+      //for (byte i = 0; i < sizeofPins; i++) {
+      //  digitalWrite(pins[i], HIGH);
+      //}
 
-      // control the timing
-      while (millis() <= pulseTimer);
+      //// control the timing
+      //while (millis() <= pulseTimer);
 
 
       // TODO - Change this so where sizeofRollingCode is not divisable by sizeofSendingRollingCode then the next sequency through is different to the last.
