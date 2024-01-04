@@ -139,7 +139,7 @@ void loop() {
       for (uint8_t x = 0; x < sizeofbuttonAndOutputPins; x++) {
         if (digitalRead(x) == LOW) functionButtons | (x + 1);
       }
-      debug("Button Value = %d", functionButtons);
+      debug("Button Value = %d \n", functionButtons);
 
       //// Depreciated - send preamble
       //for (byte number = 0; number < sizeofPreamble; number++) {
@@ -167,17 +167,18 @@ void loop() {
         debug(" %d, ", data[i]);
       }
       // add the button data
-      data[rollingCodeNumber + sizeofSendingRollingCode + 1] = functionButtons;
-      debug("Buttons: %d \n", functionButtons);
-      
+      data[sizeofSendingRollingCode] = functionButtons;
+      debug(" Buttons: %d \n", data[sizeofSendingRollingCode]);
+      debug(" in Position: %d \n", sizeofSendingRollingCode);
+
       // send the data (rolling code & button value)
       for (uint8_t number = 0; number < sizeofSendingRollingCode + 1; number++) {
-        uint64_t pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
+        uint64_t pulseTimer = millis() + 285;  // Minimum pulse duty cycle is 290ms 
 
         for (uint8_t i = 0; i < sizeofPins; i++) {
           if (bitRead(data[number], i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
         }
-        delay(3);   // give time for quichip to detect change
+        delay(5);   // give time for quichip to detect change
 
         // Reset the Tx pins
         for (uint8_t i = 0; i < sizeofPins; i++) {
@@ -187,7 +188,7 @@ void loop() {
         // control the timing
         while (millis() <= pulseTimer);
       }
-      
+
 
       //// Depreciated - send the button presses
       //pulseTimer = millis() + 300;  // Pulse duty cycle is 287ms 
@@ -215,6 +216,7 @@ void loop() {
     }
   }
 
+
 #endif // Tx Mode
 
   // Rx Mode
@@ -229,7 +231,7 @@ void loop() {
   //    debug("Preamble = %d \n", preambleCounter);
   //  }
   //}
-    
+
   //// Depreciated (new Read Everything in One hit) - Read the rolling code
   //debugChangesLoop("sizeofSendingRollingCode: %d \n", sizeofSendingRollingCode);
   //debugLoop("Rolling Code: ");
@@ -258,10 +260,10 @@ void loop() {
 
   // Read the data being received by the Rx, if any check it for validity
   // QaiChip modules need to be bound Tx to Rx, thus if data is accepted by the Rx we should validate it.
-  FAIL:
+FAIL:
   if (Rx_AcceptData()) {
-
-    if (CheckRepeatedRollingCode()) goto FAIL;
+    debug("Accept Data Passed \n")
+      if (CheckRepeatedRollingCode()) goto FAIL;
 
 
     // check the rolling code
@@ -297,11 +299,11 @@ void loop() {
     if (rollingCodeNumber >= sizeofRollingCode) rollingCodeNumber = 0;
 
     debug(" *** Passed Rolling Code Checks ***\n");
-    
+
     ActivateRxButtonPins();
   }
-
 }
+
 
 //// Depreciated - Read Data Pins
 //uint8_t ReadDataPins() {
@@ -319,22 +321,34 @@ void loop() {
 //  }
 //}
 
-bool Rx_AcceptData() {
+uint8_t Rx_AcceptData() {
+  //debug("AcceptData() Called \n");
   uint8_t countOfDataReceived = 0;
-  uint64_t transmissionTimer = millis() + (250 * sizeofSendingRollingCode);  // Pulse duty cycle is 287ms
+  uint64_t transmissionTimer = millis() + (1000 * sizeofSendingRollingCode);  // Pulse duty cycle is 287ms
   uint8_t readCode = 0;
   uint64_t pulseTimer = 0;
-  while (millis() <= transmissionTimer) {
-    if (digitalRead(2)) {
-      pulseTimer = millis() + 250;  // Pulse duty cycle is 287ms 
-      while (digitalRead(2) || millis() <= pulseTimer) {
+  if (digitalRead(2)) {
+    while (millis() <= transmissionTimer) {
+      if (digitalRead(2)) {
+        debug("digitalRead Passed \n");
+        pulseTimer = millis() + 50;  // Pulse duty cycle is 287ms 
+
         for (int8_t i = sizeofPins - 1; i >= 0; i--) {
           bitWrite(readCode, i, digitalRead(pins[i]));
         }
+        //debug("countOfDataReceived = %d \n", countOfDataReceived);
+        debug("readCode = %d \n", readCode);
         data[countOfDataReceived] = readCode;
         countOfDataReceived++;
+        if (countOfDataReceived == sizeofSendingRollingCode + 1) {
+          debug("Recieved %d bytes - terminating \n", countOfDataReceived);
+          return countOfDataReceived;
+        }
+        // control the timing
+        while (digitalRead(2) || millis() <= pulseTimer);
       }
     }
+    debug(" !!! Only Recieved %d bytes - TimeOut !!!\n", countOfDataReceived);
   }
   return countOfDataReceived;
 }
@@ -367,18 +381,17 @@ void ActivateRxButtonPins() {
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
     debug("button bit % d = % d \n", i, bitRead(functionButtons, i));
   }
-  // activate Rx pins for 210ms based on buttons pressed on Tx
+  // activate Rx pins for 210ms based on original qaichip Tx
   digitalWrite(buttonAndOutputPins[functionButtons - 1], HIGH);
-  debug("Buttons = %d pin %d value HIGH", functionButtons, buttonAndOutputPins[functionButtons - 1]);
   uint64_t waitTimer = millis() + 210;
   while (millis() <= waitTimer);
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
     digitalWrite(buttonAndOutputPins[i], LOW);
   }
-}
+
 
 #endif // RxMode
-
+}
 
 #ifdef RANDOM_NUMBERS
 void RandomCodeGenorator() {
