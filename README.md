@@ -1,5 +1,7 @@
 **Initial Release Video**
+
 ![Initial Release Video](https://youtu.be/TpmY-2w8CTI?si=Plb3RdlSTm27eQY5)
+
 
 **Updates**
 
