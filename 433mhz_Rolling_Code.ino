@@ -26,7 +26,7 @@
 */
 
 // Uncomment MODE line to flash Tx, comment to flash Rx
-//#define MODE
+#define MODE
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
@@ -143,7 +143,7 @@ void loop() {
 
       // send the data (rolling code & button value)
       for (uint8_t number = 0; number < sizeofSendingRollingCode + 1; number++) {
-        uint64_t pulseTimer = millis() + 285;  // Minimum pulse duty cycle is 290ms 
+        uint64_t pulseTimer = millis() + 300;  // Minimum pulse duty cycle is 290ms, increase if many errors are received 
 
         for (uint8_t i = 0; i < sizeofPins; i++) {
           if (bitRead(data[number], i)) digitalWrite(pins[i], LOW); else digitalWrite(pins[i], HIGH);
@@ -230,18 +230,18 @@ uint8_t Rx_AcceptData() {
   if (digitalRead(2)) {
     while (millis() <= transmissionTimer) {
       if (digitalRead(2)) {
-        debug("digitalRead Passed \n");
+        //debug("digitalRead Passed \n");
         pulseTimer = millis() + 50;  // Pulse duty cycle is 287ms 
 
         for (int8_t i = sizeofPins - 1; i >= 0; i--) {
           bitWrite(readCode, i, digitalRead(pins[i]));
         }
         //debug("countOfDataReceived = %d \n", countOfDataReceived);
-        debug("readCode = %d \n", readCode);
+        debug("%d, ", readCode);
         data[countOfDataReceived] = readCode;
         countOfDataReceived++;
         if (countOfDataReceived == sizeofSendingRollingCode + 1) {
-          debug("Recieved %d bytes - terminating \n", countOfDataReceived);
+          debug("\nRecieved %d bytes - terminating \n", countOfDataReceived);
           return countOfDataReceived;
         }
         // control the timing
