@@ -1,3 +1,6 @@
+**Initial Release Video**
+![Initial Release Video](https://youtu.be/TpmY-2w8CTI?si=Plb3RdlSTm27eQY5)
+
 **Updates**
 
 All 4 Buttons are now added, could be an addition for equipment already using qaichip TX-118S-4 v2 & RX480E parts
