@@ -11,3 +11,5 @@ Rx "Lock Out" for ever increasing time when 10 (user configarable) false codes h
 **PulseView of Timing**
 ![PulseView](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/PulseView%20(RX480%20Output%20Pins).png)
 
+**Tx & Rx Connections for Arduino Nano**
+![Nano TX Rx Connections](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/Nano%20Tx%20Rx%20Connections.png)
