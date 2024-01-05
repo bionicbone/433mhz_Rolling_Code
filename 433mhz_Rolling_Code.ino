@@ -134,7 +134,7 @@ void loop() {
 
       // Prepare the Transmission Array
       // place debugging outside of transmission loop so baud is not effected
-      debug("Transit Rolling Code: \n");
+      debug("Transmit Rolling Code: \n");
       for (uint8_t i = 0; i < sizeofSendingRollingCode; i++) {
         data[i] = rollingCode[rollingCodeNumber + i];
         debug(" %d, ", data[i]);
@@ -195,13 +195,11 @@ FAIL:
 
       for (uint16_t x = tryRollingNumber; x < tryRollingNumber + sizeofSendingRollingCode; x++) {
         if (data[x - tryRollingNumber] == rollingCode[x]) {
-          debug("Try rolling Code Position %d \n", x);
-          debug(" *** Rolling Code Correct *** %d = %d \n", data[x - tryRollingNumber], rollingCode[x]);
+          debug("p.%d *** RC Correct *** %d = %d \n", x, data[x - tryRollingNumber], rollingCode[x]);
           passed++;
         }
         else {
-          debug("Try rolling Code Position %d \n", x);
-          debug(" Rolling Code INCORRECT %d <> %d \n", data[x - tryRollingNumber], rollingCode[x]);
+          debug("p.%d !!! RC INCORRECT !!! %d <> %d \n", x, data[x - tryRollingNumber], rollingCode[x]);
           passed = 0;
         }
       }
