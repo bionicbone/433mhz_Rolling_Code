@@ -15,7 +15,7 @@ Rx "Lock Out" for ever increasing time when 10 (user configarable) false codes h
 **Solution Methodology**
 
 The code is designed to be user configurable to add an element of uniqueness to each implementation which is a key part of the projects security. For example, a manufacture of a garage door has an implementation, hack one and you have hacked them all. 
-Consider: The length of the list of random numbers can be decreased in increased (within memory limits), the amount of numbers sent each time between 2 and 10 is recommend (higher is more secure but more lag). The number of consecutive checks covers accidently presses on the Tx and allows the Rx to resync to the Tx position. The init-Value to be added once the list of Rolling Codes runs out. Even the Brute Force controls can be changed, here they are set so after 10 failed attempts the Rx Locks Out for 60 seconds, if repeated, 120, then 240 and 480 etc.
+Consider: The length of the list of random numbers can be decreased or increased (within memory limits), the amount of numbers sent each time between 2 and 10 is recommend (higher is more secure but more lag). The number of consecutive checks covers accidently presses on the Tx and allows the Rx to resync to the Tx position. The init-Value to be added once the list of Rolling Codes runs out. Even the Brute Force controls can be changed, here they are set so after 10 failed attempts the Rx Locks Out for 60 seconds, if repeated, 120, then 240 and 480 etc.
 ![User Configrable Settings](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/User%20Configrable%20Settings.png)
 
 **Rolling Code and Init-Value Example**
