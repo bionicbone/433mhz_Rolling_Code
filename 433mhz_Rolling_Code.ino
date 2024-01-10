@@ -116,9 +116,10 @@ void setup() {
 // Rx signal must hold LOW for 2ms for stable signal, but given Tx will be HIGH for 210ms then Rx may as well be HIGH for 285ms
 // Tx will need to be LOW state for 80ms minimum before next signal, thus duty cycle is 287ms absolute minimum.
 
-#if defined MODE && !defined RANDOM_NUMBERS
 void loop() {
   // Tx Mode
+#if defined MODE && !defined RANDOM_NUMBERS
+
 
   //check if button pressed
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
@@ -204,7 +205,6 @@ void loop() {
 
   // Rx Mode
 #if !defined MODE && !defined RANDOM_NUMBERS
-void loop() {
 
   // Read the data being received by the Rx, if any check it for validity
   // QaiChip modules need to be bound Tx to Rx, thus if data is accepted by the Rx we should validate it.
@@ -379,7 +379,6 @@ void RandomCodeGenorator() {
 #endif // RANDOM_NUMBERS
 
 
-#if !defined RANDOM_NUMBERS
 void ApplyInitValueToRollingCodeLoop() {
   // Apply initValue to the rollingCode[] pattern once the pattern has been used
   if (rollingCodeNumber >= sizeofRollingCode) {
@@ -395,4 +394,3 @@ void ApplyInitValueToRollingCodeLoop() {
     rollingCodeLoopCounter++;
   }
 }
-#endif

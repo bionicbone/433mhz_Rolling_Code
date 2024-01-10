@@ -12,6 +12,12 @@ User configrable init-value added to the loop of rolling codes once they have al
 
 Rx "Lock Out" for ever increasing time when 10 (user configarable) false codes have been received.
 
+Some documentaion has been added below.
+
+**Update Video**
+
+[https://youtu.be/VihT618iKPA?si=CvWJA-HzKL6Me9dn](https://youtu.be/VihT618iKPA?si=CvWJA-HzKL6Me9dn)
+
 **Solution Methodology**
 
 The code is designed to be user configurable to add an element of uniqueness to each implementation which is a key part of the projects security. For example, a manufacture of a garage door has an implementation, hack one and you have hacked them all. 
