@@ -30,7 +30,7 @@
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
-#define RANDOM_NUMBERS
+//#define RANDOM_NUMBERS
 
 // user can change the rolling code values (1-15 inc.), but must ensure Tx and Rx have the same order, length must be divisable by sizeofSendingRollingCode
 uint8_t rollingCode[966] = { 3, 12, 6, 1, 10, 12, 10, 5, 13, 2, 7, 15, 12, 3, 15, 3, 13, 5, 8, 12, 12, 1, 2, 8, 10, 1, 5, 8, 11, 13, 13, 15, 12, 12, 8, 1, 1, 10, 9, 11, 2, 9, 14, 1, 3, 15, 12, 7, 3, 14, 2, 9, 7, 2, 10, 15, 5, 15, 14, 9, 11, 2, 8, 2, 13, 4, 12, 2, 5, 14, 9, 13, 2, 10, 2, 4, 11, 5, 4, 12, 14, 1, 3, 13, 13, 14, 13, 15, 4, 14, 6, 2, 4, 9, 13, 15, 11, 2, 4, 14, 15, 1, 13, 9, 5, 3, 14, 15, 10, 5, 4, 5, 8, 15, 15, 12, 5, 15, 3, 14, 9, 13, 12, 11, 8, 7, 15, 7, 15, 3, 6, 4, 5, 11, 5, 10, 13, 13, 14, 4, 5, 12, 1, 7, 6, 9, 4, 10, 9, 3, 7, 12, 10, 12, 3, 12, 9, 5, 4, 1, 14, 1, 8, 6, 13, 7, 6, 5, 3, 14, 2, 3, 8, 13, 15, 9, 1, 3, 10, 5, 13, 8, 5, 3, 8, 11, 13, 12, 1, 13, 12, 4, 6, 2, 15, 1, 14, 7, 13, 7, 15, 14, 14, 9, 1, 6, 15, 1, 11, 10, 1, 9, 12, 4, 1, 12, 4, 4, 6, 5, 7, 2, 13, 13, 15, 11, 10, 8, 15, 7, 11, 13, 13, 1, 10, 12, 4, 3, 3, 12, 4, 14, 3, 1, 15, 12, 15, 3, 1, 1, 6, 5, 5, 14, 6, 9, 12, 11, 3, 7, 9, 5, 9, 4, 14, 12, 13, 5, 3, 5, 2, 11, 8, 8, 8, 10, 12, 11, 5, 14, 11, 1, 10, 6, 2, 13, 10, 9, 15, 12, 4, 11, 8, 11, 13, 11, 2, 1, 1, 10, 10, 10, 15, 2, 1, 7, 10, 12, 6, 14, 6, 13, 14, 7, 7, 11, 4, 1, 7, 1, 1, 11, 9, 12, 8, 13, 4, 15, 9, 5, 3, 4, 15, 3, 2, 7, 13, 5, 9, 9, 14, 1, 11, 12, 12, 7, 3, 1, 3, 2, 12, 7, 5, 5, 5, 14, 4, 2, 7, 1, 13, 9, 11, 12, 14, 1, 5, 13, 4, 10, 7, 9, 1, 7, 10, 9, 8, 11, 10, 2, 4, 11, 12, 5, 7, 6, 1, 10, 10, 2, 2, 10, 8, 10, 1, 11, 14, 7, 3, 5, 2, 1, 15, 5, 7, 3, 10, 1, 10, 11, 5, 6, 10, 3, 4, 3, 3, 12, 7, 3, 15, 13, 9, 9, 12, 8, 12, 2, 4, 9, 8, 2, 8, 2, 12, 6, 10, 11, 4, 14, 15, 4, 1, 13, 1, 5, 6, 13, 7, 13, 11, 3, 9, 5, 14, 10, 11, 6, 4, 15, 13, 7, 4, 3, 1, 8, 10, 3, 15, 10, 9, 11, 12, 7, 11, 2, 14, 6, 2, 2, 6, 10, 1, 8, 10, 8, 13, 11, 4, 2, 11, 10, 8, 10, 6, 12, 12, 14, 3, 10, 5, 11, 10, 9, 5, 4, 11, 13, 14, 14, 5, 9, 3, 2, 6, 10, 11, 6, 11, 14, 2, 4, 15, 6, 13, 7, 15, 15, 4, 12, 7, 8, 7, 15, 5, 9, 14, 6, 6, 15, 2, 11, 7, 3, 6, 7, 13, 10, 11, 1, 1, 1, 13, 14, 2, 9, 13, 12, 15, 14, 13, 2, 2, 6, 2, 4, 3, 11, 5, 7, 3, 2, 12, 7, 9, 8, 1, 12, 12, 10, 8, 11, 2, 10, 2, 8, 11, 13, 8, 2, 2, 11, 8, 9, 8, 8, 13, 14, 14, 5, 13, 5, 1, 1, 13, 5, 4, 2, 9, 5, 11, 11, 10, 9, 4, 8, 11, 7, 2, 5, 15, 5, 3, 11, 10, 4, 15, 1, 6, 5, 2, 3, 5, 8, 12, 1, 2, 6, 2, 8, 6, 11, 11, 14, 3, 7, 7, 6, 12, 6, 15, 12, 6, 1, 1, 14, 10, 3, 8, 1, 3, 3, 8, 14, 13, 1, 13, 8, 6, 11, 1, 5, 12, 6, 14, 7, 9, 7, 14, 15, 14, 10, 3, 7, 1, 5, 15, 14, 14, 8, 11, 2, 14, 4, 5, 4, 14, 4, 1, 12, 9, 13, 4, 15, 10, 1, 5, 4, 1, 9, 9, 15, 1, 12, 5, 4, 10, 9, 9, 9, 13, 9, 9, 12, 13, 9, 6, 3, 14, 4, 14, 11, 1, 5, 2, 4, 4, 9, 6, 9, 15, 5, 8, 10, 8, 14, 4, 2, 2, 5, 5, 5, 10, 9, 15, 15, 7, 9, 13, 1, 13, 15, 15, 3, 4, 2, 11, 13, 5, 5, 13, 3, 10, 14, 14, 7, 7, 15, 13, 9, 5, 15, 9, 8, 7, 1, 14, 5, 11, 5, 11, 11, 15, 6, 13, 15, 12, 8, 12, 13, 2, 9, 3, 14, 1, 4, 13, 15, 3, 10, 8, 1, 13, 3, 12, 3, 13, 2, 1, 12, 7, 10, 9, 2, 15, 14, 4, 10, 4, 4, 12, 2, 4, 4, 1, 6, 15, 6, 2, 9, 9, 13, 12, 5, 3, 6, 5, 3, 12, 10, 5, 5, 12, 15, 5, 9, 11, 8, 6, 3, 6, 14, 5, 7, 12, 6, 9, 2, 14, 3, 14, 3, 10, 15, 15, 9, 15, 2, 15, 11, 13, 7, 11, 10, 6, 10, 12, 13, 9, 13, 4, 2, 2, 14, 13, 10, 5, 6, 13, 11, 8, 11, 8, 14, 11, 15, 3, 15, 2, 3, 3, 9, 14, 7, 10, 11, 11, 14, 6, 3, 11, 12, 9, 7, 5, 14, 10, 6, 7, 9, 7, 12, 8, 7, 1, 14, 12, 11, 2, 7, 13, 5, 2, 13, 12, 9, 2, 13, 3, 8, 10, 8, 10, 7, 2, 1, 10, 10, 6, 15, 12, 2, 10, 7, 6, 4 };
@@ -112,9 +112,10 @@ void setup() {
 // Rx signal must hold LOW for 2ms for stable signal, but given Tx will be HIGH for 210ms then Rx may as well be HIGH for 285ms
 // Tx will need to be LOW state for 80ms minimum before next signal, thus duty cycle is 287ms absolute minimum.
 
-#if defined MODE && !defined RANDOM_NUMBERS
 void loop() {
   // Tx Mode
+#if defined MODE && !defined RANDOM_NUMBERS
+
 
   //check if button pressed
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
@@ -173,7 +174,6 @@ void loop() {
 
   // Rx Mode
 #if !defined MODE && !defined RANDOM_NUMBERS
-void loop() {
 
   // Read the data being received by the Rx, if any check it for validity
   // QaiChip modules need to be bound Tx to Rx, thus if data is accepted by the Rx we should validate it.
@@ -326,7 +326,6 @@ void RandomCodeGenorator() {
 #endif // RANDOM_NUMBERS
 
 
-#if !defined RANDOM_NUMBERS
 void ApplyInitValueToRollingCodeLoop() {
   // Apply initValue to the rollingCode[] pattern once the pattern has been used
   if (rollingCodeNumber >= sizeofRollingCode) {
@@ -341,4 +340,3 @@ void ApplyInitValueToRollingCodeLoop() {
     rollingCodeNumber = 0;
   }
 }
-#endif
