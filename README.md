@@ -20,7 +20,7 @@ Some documentaion has been added below.
 
 **10th Jan 2024**
 
-Add forced reset when button is pressed > 5 seconds, this applies an initValue to be added to the rolling codes so they are not repeated but allows TX & Rx to resync at the begining of a new set of codes.
+Add forced reset when button is pressed > 5 seconds, this applies the initValue to the rolling codes so they are not repeated and allows TX & Rx to resync at the begining of a new set of codes.
 
 **Update Video**
 
