@@ -30,8 +30,7 @@ Consider: The length of the list of random numbers can be decreased or increased
 **PulseView of Timing**
 ![PulseView1](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/PulseView%20(RX480%20Output%20Pins).png)
 
-
-![PulseView2](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/Nano%20Tx%20Rx%20Connections.png)
+![PulseView2](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/PulseView%20(Tx%20Rx%20Timing).png)
 
 **Tx & Rx Connections for Arduino Nano**
 ![Nano TX Rx Connections](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/Nano%20Tx%20Rx%20Connections.png)
