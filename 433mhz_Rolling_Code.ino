@@ -26,7 +26,7 @@
 */
 
 // Uncomment MODE line to flash Tx, comment to flash Rx
-//#define MODE
+#define MODE
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
@@ -149,6 +149,10 @@ void loop() {
           // control the timing
           while (millis() <= pulseTimer);
         }
+
+        rollingCodeNumber = sizeofRollingCode;  // Triggers InitValue code
+        ApplyInitValueToRollingCodeLoop();
+
         debug(" Done... \n");
         break;  // leave for next loop
       }
@@ -251,7 +255,8 @@ FAIL:
         }
         // Forced Reset Received
         if (passed == sizeOfForcedReset) {
-          rollingCodeNumber = 0;
+          rollingCodeNumber = sizeofRollingCode;  // Triggers InitValue code
+          ApplyInitValueToRollingCodeLoop();
           debug(" !!! Forced Reset Received !!!\n");
           goto FAIL;
         }
