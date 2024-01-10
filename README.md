@@ -4,15 +4,23 @@
 
 **Updates**
 
+**2nd Jan 2024**
+
 All 4 Buttons are now added, could be an addition for equipment already using qaichip TX-118S-4 v2 & RX480E parts
 
-Better timing, code re-written, read "times out" if interference creeps in.
+code re-written, read "times out" if interference creeps in.
+
+**5th Jan 2024** 
 
 User configrable init-value added to the loop of rolling codes once they have all been consumed, thus only increaments after x codes consumed and invisible to hacker when this occurs or doesn't occur. 
 
 Rx "Lock Out" for ever increasing time when 10 (user configarable) false codes have been received.
 
 Some documentaion has been added below.
+
+**10th Jan 2024**
+
+Add forced reset when button is pressed > 5 seconds, this applies an initValue to be added to the rolling codes so they are not repeated but allows TX & Rx to resync at the begining of a new set of codes.
 
 **Update Video**
 
