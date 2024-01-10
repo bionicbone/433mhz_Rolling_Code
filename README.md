@@ -1,31 +1,3 @@
-**Initial Release Video**
-
-[https://www.youtube.com/watch?v=JLMbpiywVxQ](https://youtu.be/TpmY-2w8CTI)
-
-**Updates**
-
-**2nd Jan 2024**
-
-All 4 Buttons are now added, could be an addition for equipment already using qaichip TX-118S-4 v2 & RX480E parts
-
-code re-written, read "times out" if interference creeps in.
-
-**5th Jan 2024** 
-
-User configrable init-value added to the loop of rolling codes once they have all been consumed, thus only increaments after x codes consumed and invisible to hacker when this occurs or doesn't occur. 
-
-Rx "Lock Out" for ever increasing time when 10 (user configarable) false codes have been received.
-
-Some documentaion has been added below.
-
-**10th Jan 2024**
-
-Add forced reset when button is pressed > 5 seconds, this applies the initValue to the rolling codes so they are not repeated and allows TX & Rx to resync at the begining of a new set of codes.
-
-**Update Video**
-
-[https://youtu.be/VihT618iKPA?si=CvWJA-HzKL6Me9dn](https://youtu.be/VihT618iKPA?si=CvWJA-HzKL6Me9dn)
-
 **Solution Methodology**
 
 The code is designed to be user configurable to add an element of uniqueness to each implementation which is a key part of the projects security. For example, a manufacture of a garage door has an implementation, hack one and you have hacked them all. 
@@ -34,6 +6,34 @@ Consider: The length of the list of random numbers can be decreased or increased
 
 **Rolling Code and Init-Value Example**
 ![Rolling Code and Init-Value Example](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/Rolling%20Code%20and%20Init-Value%20Example.png)
+
+
+**Initial Release Video**
+
+[https://www.youtube.com/watch?v=JLMbpiywVxQ](https://youtu.be/TpmY-2w8CTI)
+
+**Updates on 2nd Jan 2024**
+
+All 4 Buttons are now added, could be an addition for equipment already using qaichip TX-118S-4 v2 & RX480E parts
+
+code re-written, read "times out" if interference creeps in.
+
+**Updates on 5th Jan 2024** 
+
+User configrable init-value added to the loop of rolling codes once they have all been consumed, thus only increaments after x codes consumed and invisible to hacker when this occurs or doesn't occur. 
+
+Rx "Lock Out" for ever increasing time when 10 (user configarable) false codes have been received.
+
+Some documentaion has been added below.
+
+**Update Video**
+
+[https://youtu.be/VihT618iKPA?si=CvWJA-HzKL6Me9dn](https://youtu.be/VihT618iKPA?si=CvWJA-HzKL6Me9dn)
+
+**Updates on 10th Jan 2024**
+
+Add forced reset when button is pressed > 5 seconds, this applies the initValue to the rolling codes so they are not repeated and allows TX & Rx to resync at the begining of a new set of codes.
+
 
 **PulseView of Timing**
 ![PulseView1](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/PulseView%20(RX480%20Output%20Pins).png)
