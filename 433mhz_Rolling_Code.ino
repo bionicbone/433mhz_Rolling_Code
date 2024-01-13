@@ -34,7 +34,7 @@
  
 // !*!*! REMEMBER TO SET TX ID NUMBER WHEN FLASHING MULTIPLE TX UNITS FOR THE SAME RX !*!*!
 // Uncomment MODE line to flash Tx, comment to flash Rx
-//#define MODE
+#define MODE
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
@@ -51,6 +51,7 @@ uint8_t initValue = 3;                 // (1-14) user should change this, values
 uint16_t bruteForceInitialLockDownTime = 60;  // (seconds) User can change this, each time 10 invalide codes is received the current number will be doubled for the lock down time, thus 60 seconds, then 120, 240, 480 etc.
 uint8_t bruteForceMaxBeforeLockDown = 10;  // (times) User can change this, if this many incorrect codes is received lock down will be initiated.
 uint8_t forceReset[3] = { 1,2,3 };     // user should change this random code, triggered after pressing button 1 for > 5 seconds, it will transmit this code. 
+uint16_t pulseDutyCycle = 400;         //  290 - 500, lower faster less tolerant of interferance & less distance, higher slower but more tolerant to interference and more distance
  /**************************************
   *** End of User changable settings ***
   **************************************/
@@ -133,7 +134,7 @@ void setup() {
   }
   pinMode(pinTxLED, OUTPUT);
   // Split RollingCode Array between the number of Tx the system will support
-  Serial.println("\n\nTx Mode \n");
+  debug("\n\nTx Mode, TxIDNo = %d\n", TxIdNumber);
   SetupRollingCodeNumbersForEachTx();
 #endif // Tx Mode 
 
@@ -182,12 +183,12 @@ void loop() {
       uint64_t buttonTimer = millis();
       while (digitalRead(buttonAndOutputPins[i]) == LOW);
       if (millis() - buttonTimer >= 5000) {
-        debug(" !!! Transmit Forced Reset Signal !!! \n");
-        rollingCodeNumber[TxIdNumber] = 0;
+        debug("\n\nTransmit Forced Reset Signal\n");
+        rollingCodeNumber[TxIdNumber] = maxRollingCodeNumber[TxIdNumber];
 
         // send a forced reset signal
         for (uint8_t number = 0; number < sizeOfForcedReset; number++) {
-          uint64_t pulseTimer = millis() + 300;  // Minimum pulse duty cycle is 290ms, increase if many errors are received 
+          uint64_t pulseTimer = millis() + pulseDutyCycle;  // Minimum pulse duty cycle is 290ms, increase if many errors are received 
 
           for (uint8_t i = 0; i < sizeofPins; i++) {
             if (bitRead(forceReset[number], i)) digitalWrite(pinsTxRxToMCU[i], LOW); else digitalWrite(pinsTxRxToMCU[i], HIGH);
@@ -241,7 +242,7 @@ void loop() {
  
       // send the data (rolling code & button value)
       for (uint8_t number = 0; number < sizeofSendingRollingCode + 1; number++) {
-        uint64_t pulseTimer = millis() + 300;  // Minimum pulse duty cycle is 290ms, increase if many errors are received 
+        uint64_t pulseTimer = millis() + pulseDutyCycle;  // Minimum pulse duty cycle is 290ms, increase if many errors are received 
 
         for (uint8_t i = 0; i < sizeofPins; i++) {
           if (bitRead(data[number], i)) digitalWrite(pinsTxRxToMCU[i], LOW); else digitalWrite(pinsTxRxToMCU[i], HIGH);
@@ -301,7 +302,7 @@ FAIL:
         tempRollingCode = rollingCode[x];
         
         if (x - tryRollingNumber == 0) {
-          debug("\nTxIDNo %d\n", TxIdNumber);
+          debug("TxIDNo %d\n", TxIdNumber);
           debug("Extract TxIDNo was %d ", tempRollingCode);
           // Embed the Tx number into tempRollingCode Value before testing it
           bitWrite(tempRollingCode, 0, bitRead(TxIdNumber, 0));
@@ -334,9 +335,9 @@ FAIL:
         }
         // Forced Reset Received
         if (passed == sizeOfForcedReset) {
-          rollingCodeNumber[TxIdNumber] = sizeofRollingCode;  // Triggers InitValue code
+          rollingCodeNumber[TxIdNumber] = maxRollingCodeNumber[TxIdNumber];  // Triggers InitValue code
+          debug("\n\nForced Reset Received\n");
           ApplyInitValueToRollingCodeLoop();
-          debug(" !!! Forced Reset Received !!!\n");
           goto FAIL;
         }
       }
@@ -357,12 +358,12 @@ FAIL:
     debug(" Passed RC Checks\n");
     bruteForceCounter = 0;
     bruteForceLockDownTime = bruteForceInitialLockDownTime;
-    ApplyInitValueToRollingCodeLoop();
     // Light the Tx ID LED (NANO NOT Supported)
-    digitalWrite(pinsRxTxIdLED[TxIdNumber - 1], HIGH);
+    digitalWrite(pinsRxTxIdLED[TxIdNumber], HIGH);
     ActivateRxButtonPins();
+    ApplyInitValueToRollingCodeLoop();
     // Clear the Tx ID LED (NANO NOT Supported)
-    digitalWrite(pinsRxTxIdLED[TxIdNumber - 1], LOW);
+    digitalWrite(pinsRxTxIdLED[TxIdNumber], LOW);
   }
 }
 
@@ -371,31 +372,32 @@ FAIL:
 uint8_t Rx_AcceptData() {
   //debug("AcceptData() Called \n");
   uint8_t countOfDataReceived = 0;
-  uint64_t transmissionTimer = millis() + (1000 * sizeofSendingRollingCode);  // Pulse duty cycle is 287ms
+  uint64_t transmissionTimer = millis() + ((pulseDutyCycle *1.5) * sizeofSendingRollingCode);  // Pulse duty cycle is 287ms
   uint8_t readCode = 0;
   uint64_t pulseTimer = 0;
   if (digitalRead(pinRxCLK)) {
     while (millis() <= transmissionTimer) {
       if (digitalRead(pinRxCLK)) {
         //debug("digitalRead Passed \n");
-        pulseTimer = millis() + 50;  // Pulse duty cycle is 287ms 
+        pulseTimer = millis() + pulseDutyCycle;  // Min Pulse duty cycle is 287ms 
 
         for (int8_t i = sizeofPins - 1; i >= 0; i--) {
           bitWrite(readCode, i, digitalRead(pinsTxRxToMCU[i]));
         }
         //debug("countOfDataReceived = %d \n", countOfDataReceived);
-        //debug("%d, ", readCode);
+        debug("%d, ", readCode);
         data[countOfDataReceived] = readCode;
         countOfDataReceived++;
         if (countOfDataReceived == sizeofSendingRollingCode + 1) {
-          debug("\nRecieved %d bytes - terminating \n", countOfDataReceived);
+          debug("\nRecieved %d bytes - OK\n", countOfDataReceived);
+          while (digitalRead(pinRxCLK) && millis() <= pulseTimer);
           return countOfDataReceived;
         }
         // control the timing
-        while (digitalRead(pinRxCLK) || millis() <= pulseTimer);
+        while (digitalRead(pinRxCLK) && millis() <= pulseTimer);
       }
     }
-    debug(" !!! Only Recieved %d bytes - TimeOut !!!\n", countOfDataReceived);
+    debug("\n\nOnly Recieved %d bytes - TimeOut\n", countOfDataReceived);
   }
   return countOfDataReceived;
 }
@@ -425,7 +427,7 @@ bool CheckRepeatedRollingCode() {
 
 void ActivateRxButtonPins() {
   uint8_t functionButtons = data[sizeofSendingRollingCode];
-  debug("Button Pressed %d", functionButtons);
+  debug("Button Pressed %d\n\n\n", functionButtons);
   for (uint8_t i = 0; i < sizeofbuttonAndOutputPins; i++) {
     //debug("button bit % d = % d \n", i, bitRead(functionButtons, i));
   }
@@ -475,9 +477,9 @@ void RandomCodeGenorator() {
 // Apply initValue to the rollingCode[] pattern once the pattern has been used
 void ApplyInitValueToRollingCodeLoop() {
   if (rollingCodeNumber[TxIdNumber] >= maxRollingCodeNumber[TxIdNumber]) {
-    debug("New Rolling Code Loop Genorating \n");
-    debug("Triggered by Tx%d", TxIdNumber);
-    debug("rollingCodeNumber = %d, sizeofRollingCode = %d \n", rollingCodeNumber[TxIdNumber], sizeofRollingCode);
+    debug("New Rolling Code Loop Generating\n");
+    debug("Triggered by Tx%d\n", TxIdNumber);
+    debug("rollingCodeNumber = %d\n sizeofRollingCode = %d\n", rollingCodeNumber[TxIdNumber], sizeofRollingCode);
     rollingCodeNumber[TxIdNumber] = int(sizeofRollingCode / numberOfTxAttached) * TxIdNumber;
     for (uint16_t y = rollingCodeNumber[TxIdNumber]; y <= maxRollingCodeNumber[TxIdNumber] ; y++) {
       debug("Position %d was %d ", y, rollingCode[y]);
