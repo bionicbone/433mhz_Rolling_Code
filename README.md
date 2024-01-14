@@ -36,20 +36,20 @@ Add forced reset when button is pressed > 5 seconds, this applies the initValue 
 
 **Updates on 14th Jan 2024**
 
-Add ESP32 Support
--required for Tx Deep Sleep ( coming soon... )
--required for Rx advanced feature ( coming soon... )
-Add ATmega328P and ESP32 compile instructions
--around the debugging functions
--around pin setups
-Add Tx Transmit LED on pinLED
-Embed Tx ID onto first nibble of Rolling Code in Tx
-Extract Tx ID rom first nibble of Rolling Code in Rx
-Add Rx Tx Identification LEDs fro Tx0, Tx1, Tx2 ID
-Share Rolling Codes for x number of attached Tx's
-Perfect timing in high interferance environments (timing user configrable)
-Tidied up some code - more to do
-Tidied up debugging messages
+Add ESP32 Support  
+-required for Tx Deep Sleep ( coming soon... )  
+-required for Rx advanced feature ( coming soon... )  
+Add ATmega328P and ESP32 compile instructions  
+-around the debugging functions  
+-around pin setups  
+Add Tx Transmit LED on pinLED  
+Embed Tx ID onto first nibble of Rolling Code in Tx  
+Extract Tx ID rom first nibble of Rolling Code in Rx  
+Add Rx Tx Identification LEDs fro Tx0, Tx1, Tx2 ID  
+Share Rolling Codes for x number of attached Tx's  
+Perfect timing in high interferance environments (timing user configrable)  
+Tidied up some code - more to do  
+Tidied up debugging messages  
 Tested Perfect, no issues found
 
 **Mulit-Tx Update Video**
