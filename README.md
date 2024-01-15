@@ -57,9 +57,67 @@ Tested Perfect, no issues found
 [https://youtu.be/CfMDaaJQzlc](https://youtu.be/CfMDaaJQzlc)
 
 **PulseView of Timing**
+
+The correct connection method when using a logic analyzer is at both Nano side connections not at the Rx Tx because the outputs on the Rx and Tx are not logical. Think of it as the Tx Nano is transmitting a nibble (4 bits) of data and the Rx Nano is receiving that nibble of data. Here are some close up pictures to help.
+
+Logic Analyzer
+![DSC00073](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/5f58b94e-5015-4e45-8481-3c4371b61772)
+
+Tx Nano
+![DSC00074](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/4a711066-c10e-4a55-b3d6-95a00ff8540a)
+
+Rx Nano
+![DSC00076](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/079acf95-4e34-4057-9b5d-7d913e13cf4e)
+
+Results, short pulse is the Tx, Long Pulse is the Rx. The Tx should pulse a pattern and the Rx should receive the same pattern.
 ![PulseView1](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/PulseView%20(RX480%20Output%20Pins).png)
 
 ![PulseView2](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/PulseView%20(Tx%20Rx%20Timing).png)
 
 **Tx & Rx Connections for Arduino Nano**
 ![Nano TX Rx Connections](https://github.com/bionicbone/433mhz_Rolling_Code/blob/main/Nano%20Tx%20Rx%20Connections.png)
+
+**Watch the above videos for more information**
+
+Tx Nano
+![DSC00084](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/8c3b369c-008a-4d64-9549-cf2db4eaaa40)
+
+![DSC00085](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/4e7ff7af-a664-4805-9a6a-3a887bf1698e)
+
+![DSC00087](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/78143535-a7f3-4c08-882b-8b96a292f79c)
+
+![DSC00086](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/64bff07f-60d4-42f4-8239-1040f59840a8)
+
+Rx Nano
+![DSC00081](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/7a4ddcb5-e1f7-47b9-9360-e9f12c40baed)
+
+![DSC00082](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/05e247a5-adff-43fc-a4f4-85e4eff011bb)
+
+![DSC00083](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/1cabe503-e7e5-49e9-89c4-14c02838744b)
+
+Tx ESP32S
+![DSC00088](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/90471e75-18bc-4dcc-b14b-36287cf97699)
+
+![DSC00089](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/5c868292-2191-4588-93f9-5d7f4a2518fc)
+
+![DSC00090](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/b0b2030f-b9c5-4d89-bde2-ab35de4876c3)
+
+![DSC00091](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/feeb637a-3dc8-4862-ba9d-9524abce5e2a)
+
+![DSC00092](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/1b9d0faf-afe4-4088-a540-7691293f6f98)
+
+![DSC00093](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/354788cb-a193-4cef-b115-c9e7e62e76bf)
+
+Rx ESP32
+![DSC00094](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/30f422ed-bda6-4436-bd3a-219453a39c78)
+
+![DSC00095](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/1e3ba498-e4b5-4f17-bbad-685f01d04a20)
+
+![DSC00096](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/badee17d-245e-4c25-999b-01e3647cf4de)
+
+![DSC00097](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/fbcbe548-0877-47e7-b5f8-e120f2a79131)
+
+![DSC00098](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/006d2af5-92c8-4c33-92c7-c574dffa18bb)
+
+![DSC00099](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/e83eea62-5dd5-49f2-a5d6-9fcff2da095d)
+
