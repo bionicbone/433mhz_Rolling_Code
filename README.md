@@ -121,3 +121,7 @@ Rx ESP32
 
 ![DSC00099](https://github.com/bionicbone/433mhz_Rolling_Code/assets/7845867/e83eea62-5dd5-49f2-a5d6-9fcff2da095d)
 
+
+Disclaimer:
+
+This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. This software is used at your own risk. I am under no obligation to maintain, support or leave this software or documentation in the public domain, likewise I am under no obligation to release designs for all the sensors or other electronics that I have developed.
