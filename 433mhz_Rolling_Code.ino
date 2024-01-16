@@ -34,7 +34,7 @@
  
 // !*!*! REMEMBER TO SET TX ID NUMBER WHEN FLASHING MULTIPLE TX UNITS FOR THE SAME RX !*!*!
 // Uncomment MODE line to flash Tx, comment to flash Rx
-//#define MODE
+#define MODE
 
 // Uncomment RANDOM_NUMBERS line to create a list of random numbers over serial monitor.
 // NOTE: connect any value but different value resistors to A0 as voltage dividor to create a random seed otherwise numbers will be default NANO random numbers.
@@ -184,7 +184,7 @@ void loop() {
       while (digitalRead(buttonAndOutputPins[i]) == LOW);
       if (millis() - buttonTimer >= 5000) {
         debug("\n\nTransmit Forced Reset Signal\n");
-        rollingCodeNumber[TxIdNumber] = maxRollingCodeNumber[TxIdNumber];
+        rollingCodeNumber[TxIdNumber-1] = maxRollingCodeNumber[TxIdNumber-1];
 
         TransmitData(9, forceReset, sizeOfForcedReset);  // 9 indicates forced reset to Transmit function
 
@@ -266,7 +266,7 @@ void loop() {
 
       // TODO - Change this so where sizeofRollingCode is not divisable by sizeofSendingRollingCode then the next sequency through is different to the last.
       // Thus, the next run through may start at psotion 1 or 2 ect to given a different roll for 3 numbers etc.
-      rollingCodeNumber[TxIdNumber] = rollingCodeNumber[TxIdNumber] + sizeofSendingRollingCode;
+      rollingCodeNumber[TxIdNumber-1] = rollingCodeNumber[TxIdNumber-1] + sizeofSendingRollingCode;
       ApplyInitValueToRollingCodeLoop();
       digitalWrite(pinTxLED, LOW);
     }
@@ -284,7 +284,7 @@ void TransmitData(uint8_t btnNumber, uint8_t DataArray[], uint8_t sizeofDataArra
   
   
   uint8_t functionButtons = 0;
-  uint16_t tempRollingCodeNumber = rollingCodeNumber[TxIdNumber];
+  uint16_t tempRollingCodeNumber = rollingCodeNumber[TxIdNumber-1];
   if (btnNumber == 9) tempRollingCodeNumber = 0;
 
   // read users buttons
@@ -365,9 +365,9 @@ FAIL:
 
     // check the next x rolling codes
     for (uint8_t i = 0; i < consecutiveChecks * sizeofSendingRollingCode; i = i + sizeofSendingRollingCode) {
-      tryRollingNumber = rollingCodeNumber[TxIdNumber] + i;
+      tryRollingNumber = rollingCodeNumber[TxIdNumber-1] + i;
       // TODO - is this next line really necessary, old code before for/next ?
-      if (tryRollingNumber >= sizeofRollingCode) rollingCodeNumber[TxIdNumber] + i;
+      if (tryRollingNumber >= sizeofRollingCode) rollingCodeNumber[TxIdNumber-1] + i;
 
       for (uint16_t x = tryRollingNumber; x < tryRollingNumber + sizeofSendingRollingCode; x++) {
         tempRollingCode = rollingCode[x];
@@ -420,7 +420,7 @@ FAIL:
       }
       // Forced Reset Received
       if (passed == sizeOfForcedReset) {
-        rollingCodeNumber[TxIdNumber] = maxRollingCodeNumber[TxIdNumber];  // Triggers InitValue code
+        rollingCodeNumber[TxIdNumber-1] = maxRollingCodeNumber[TxIdNumber-1];  // Triggers InitValue code
         debug("\n\nForced Reset Received\n");
         ApplyInitValueToRollingCodeLoop();
         goto FAIL;
@@ -430,7 +430,7 @@ FAIL:
 
 
     if (passed != sizeofSendingRollingCode) {
-      rollingCodeNumber[TxIdNumber] += sizeofSendingRollingCode;
+      rollingCodeNumber[TxIdNumber-1] += sizeofSendingRollingCode;
       debug(" Failed RC Checks\n");
       bruteForceCounter++;
       if (bruteForceCounter >= bruteForceMaxBeforeLockDown) InitiateLockDown();
@@ -438,16 +438,16 @@ FAIL:
       goto FAIL;
     }
 
-    rollingCodeNumber[TxIdNumber] = tryRollingNumber + sizeofSendingRollingCode;
+    rollingCodeNumber[TxIdNumber-1] = tryRollingNumber + sizeofSendingRollingCode;
     debug(" Passed RC Checks\n");
     bruteForceCounter = 0;
     bruteForceLockDownTime = bruteForceInitialLockDownTime;
     // Light the Tx ID LED (NANO NOT Supported)
-    digitalWrite(pinsRxTxIdLED[TxIdNumber], HIGH);
+    digitalWrite(pinsRxTxIdLED[TxIdNumber-1], HIGH);
     ActivateRxButtonPins();
     ApplyInitValueToRollingCodeLoop();
     // Clear the Tx ID LED (NANO NOT Supported)
-    digitalWrite(pinsRxTxIdLED[TxIdNumber], LOW);
+    digitalWrite(pinsRxTxIdLED[TxIdNumber-1], LOW);
   }
 }
 
@@ -560,19 +560,19 @@ void RandomCodeGenorator() {
 
 // Apply initValue to the rollingCode[] pattern once the pattern has been used
 void ApplyInitValueToRollingCodeLoop() {
-  if (rollingCodeNumber[TxIdNumber] >= maxRollingCodeNumber[TxIdNumber]) {
+  if (rollingCodeNumber[TxIdNumber-1] >= maxRollingCodeNumber[TxIdNumber-1]) {
     debug("New Rolling Code Loop Generating\n");
     debug("Triggered by Tx%d\n", TxIdNumber);
-    debug("rollingCodeNumber = %d\n sizeofRollingCode = %d\n", rollingCodeNumber[TxIdNumber], sizeofRollingCode);
-    rollingCodeNumber[TxIdNumber] = int(sizeofRollingCode / numberOfTxAttached) * TxIdNumber;
-    for (uint16_t y = rollingCodeNumber[TxIdNumber]; y <= maxRollingCodeNumber[TxIdNumber] ; y++) {
+    debug("rollingCodeNumber = %d\n sizeofRollingCode = %d\n", rollingCodeNumber[TxIdNumber-1], sizeofRollingCode);
+    rollingCodeNumber[TxIdNumber-1] = int(sizeofRollingCode / numberOfTxAttached) * TxIdNumber;
+    for (uint16_t y = rollingCodeNumber[TxIdNumber-1]; y <= maxRollingCodeNumber[TxIdNumber-1] ; y++) {
       debug("Position %d was %d ", y, rollingCode[y]);
       rollingCode[y] += initValue;
       if (rollingCode[y] > 15) rollingCode[y] = int(rollingCode[y] / 15);
       debug("now %d \n", rollingCode[y]);
     }
     // TODO is the next line really needed ?
-    rollingCodeNumber[TxIdNumber] = int(sizeofRollingCode / numberOfTxAttached) * TxIdNumber;
+    rollingCodeNumber[TxIdNumber-1] = int(sizeofRollingCode / numberOfTxAttached) * TxIdNumber;
   }
 }
 
@@ -588,7 +588,7 @@ void SetupRollingCodeNumbersForEachTx() {
   maxRollingCodeNumber[1] = rollingCodeNumber[1] + (uint16_t)sizeofSendingRollingCode * int((sizeofRollingCode / numberOfTxAttached) / (uint16_t)sizeofSendingRollingCode) - 1;
   maxRollingCodeNumber[2] = rollingCodeNumber[2] + (uint16_t)sizeofSendingRollingCode * int((sizeofRollingCode / numberOfTxAttached) / (uint16_t)sizeofSendingRollingCode) - 1;
   for (uint8_t i = 0; i < numberOfTxAttached; i++) {
-    debug("Tx%d/Rx%d Range %d to %d\n", i, i, rollingCodeNumber[i], maxRollingCodeNumber[i]);
+    debug("Tx%d/Rx%d Range %d to %d\n", i+1, i+1, rollingCodeNumber[i], maxRollingCodeNumber[i]);
   }
 }
 #endif
