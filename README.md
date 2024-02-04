@@ -59,6 +59,9 @@ Tested Perfect, no issues found
 **RollJam Investigations Video**  
 [https://youtu.be/gohp3LFnj8Y](https://youtu.be/gohp3LFnj8Y)
 
+**Decoding the QiaChip Signals Video**  
+[https://youtu.be/DBNdfk8Yu3U](https://youtu.be/DBNdfk8Yu3U)
+
 **PulseView of Timing**
 
 The correct connection method when using a logic analyzer is at both Nano side connections not at the Rx Tx because the outputs on the Rx and Tx are not logical. Think of it as the Tx Nano is transmitting a nibble (4 bits) of data and the Rx Nano is receiving that nibble of data. Here are some close up pictures to help.
